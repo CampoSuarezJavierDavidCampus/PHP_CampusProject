@@ -1,14 +1,9 @@
 <?php
 namespace Models;
-use Models\Model;
-use App\Classes\Person;
+use App\Model;
 use Exception;
 
 class PersonModel extends Model{
-    public function __construct($obj, \PDO $conn , &$response){
-        $this->set_obj($obj);
-        $response =$this->execute($conn);
-    }
     protected function GET():array{
         $SQL['contents']= "SELECT p.id_person AS id,p.firstname_person AS firstname, p.lastname_person AS lastname, CONCAT(p.firstname_person, ' ' ,p.lastname_person) as name, p.birthday_person AS birthday, p.id_city AS id_city, CONCAT(c.name_city,' - ',r.name_region,' ',ctr.name_country) AS city  FROM persons AS p INNER JOIN cities AS c ON p.id_city = c.id_city INNER JOIN regions AS r ON c.id_region = r.id_region INNER JOIN countries AS ctr ON r.id_country = ctr.id_country ";
         if(!empty($this->obj->id)){
@@ -18,17 +13,18 @@ class PersonModel extends Model{
         return $SQL;
     }
     protected function POST():string{
-        if(!empty($$this->obj->id))throw new Exception('PERSON NOT FOUND');
-        return "INSERT INTO persons (id_person, firstname_person, lastname_person, birthday_person, id_city) VALUES (:id, :firstname_person, :lastname_person, :birthday_person, :id_city)";
+        if(!empty($this->obj->id))throw new Exception('PERSON NOT FOUND');        
+        return "INSERT INTO persons (id_person, firstname_person, lastname_person, birthday_person, id_city) VALUES (:current_id, :firstname_person, :lastname_person, :birthday_person, :id_city)";
+
     }
     protected function DELETE():string{
-        if(empty($this->obj->$this->obj->id))throw new Exception('PERSON NOT FOUND');
+        if(empty($this->obj->id))throw new Exception('PERSON NOT FOUND');
         return "DELETE FROM persons WHERE id_person = :id";
     }
     
     protected function UPDATE():string|array{
-        if(empty($this->obj->id))throw new Exception('PERSON NOT FOUND');
-        if(!empty($this->obj->firstname_person)){
+        if(empty($this->obj->id))throw new Exception('PERSON NOT FOUND');        
+        if(!empty($_POST)){                   
             return "UPDATE persons SET 
             id_person = :current_id,
             firstname_person = :firstname_person,
@@ -38,12 +34,5 @@ class PersonModel extends Model{
             WHERE id_person = :id";
         }
         return $this->GET();
-    }            
-    
-    static function init(Person $person, \PDO $conn ):array{
-        $response = [];
-        new PersonModel($person,$conn,$response);
-        return $response;        
-    }    
-
+    }
 }

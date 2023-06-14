@@ -20,8 +20,8 @@
                         <td class="text-capitalize">$birthday</td>                        
                         <td class="text-capitalize">$person->city</td>                        
                         <td>
-                            <a class="btn btn-danger" href="../persons/delete/$person->id">Eliminar</a>
-                            <a class="btn btn-success" href="../persons/edit/$person->id">Editar</a>
+                            <a class="btn btn-danger" href="../person/delete/$person->id">Eliminar</a>
+                            <a class="btn btn-success" href="../person/edit/$person->id">Editar</a>
                         </td>                
                     </tr>
                 HTML;

@@ -1,5 +1,5 @@
 <?php
-$url = 'persons/insert';    
+$url = 'person/insert';    
 if(count(explode('/',$_SERVER['REQUEST_URI'])) >= 3){
     $url = '../../'.$url;
 }

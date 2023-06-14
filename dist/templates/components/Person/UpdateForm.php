@@ -44,7 +44,7 @@ $person = $result['contents'][0];
             <label class="form-label" for='ciudad'>SELECCIONES LA Ciudad</label>
             <select name="ciudad" class="form-control" id="ciudad">
             <?php                                
-                    foreach ($result['cities'] as $city){
+                    foreach ($result['form'] as $city){
                         $selected = $city->id == $person->id_city ? ' selected="selected"' : '';
                         echo <<<HTML
                             <option value="$city->id" $selected>$city->name</option>
