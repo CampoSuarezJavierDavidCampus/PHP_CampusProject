@@ -8,14 +8,8 @@ class Person extends ORM{
     protected ?string $lastname_person = null;
     protected ?string $birthday_person = null;
     protected ?int $id_city = null; 
-    public function __construct(int|string|null $id = null){        
-        $method = $_SERVER['REQUEST_METHOD'];
-        if(!empty($id))$this->set_id($id);        
-        if($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD']!== 'GET' && empty($_POST) && empty($id))
-        throw new Exception('ERROR: NOT FOUND');        
-        if($method!=='GET' && $method!=='DELETE')$this->set_params();
-    }
-    protected function validate():array{
+ 
+    protected function validate():void{
         if((
             $_SERVER['REQUEST_METHOD']==='POST' ||
             ($_SERVER['REQUEST_METHOD']==='PUT' && !empty($_POST))) && 
@@ -27,34 +21,23 @@ class Person extends ORM{
             !isset($_POST['ciudad']) || empty(trim($_POST['ciudad'])))                                                
         ){
             $date = explode('-',trim($_POST['fecha_nacimiento']));            
-            if(count($date)!==3)throw new \Exception('ERROR: INVALID DATE');
+            if(count($date)!==3)throw new Exception('ERROR: INVALID DATE');
             list($year,$month,$day) = $date;
-            if(!checkdate($month,$day,$year))throw new \Exception('ERROR: INVALID DATE');
-            if(!is_numeric($_POST['ciudad']))throw new \Exception('ERROR: INVALID CITY');
-            throw new \Exception('ERROR: INVALID PARAMETERS');
+            if(!checkdate($month,$day,$year))throw new Exception('ERROR: INVALID DATE');
+            if(!is_numeric($_POST['ciudad']))throw new Exception('ERROR: INVALID CITY');
+            throw new Exception('ERROR: INVALID PARAMETERS');
         }
-        if(isset($_POST['documento'])){            
-            $id = filter_input(INPUT_POST,'documento',FILTER_SANITIZE_SPECIAL_CHARS);
-            $this->set_id($id);
-        }
-        $firstname_person = filter_input(INPUT_POST,'nombre',FILTER_SANITIZE_SPECIAL_CHARS);        
-        $firstname_person = strtolower(trim($firstname_person));        
-        $lastname_person = filter_input(INPUT_POST,'apellido',FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastname_person = strtolower(trim($lastname_person));
-        $birthday_person = filter_input(INPUT_POST,'fecha_nacimiento',FILTER_SANITIZE_SPECIAL_CHARS);
-        $birthday_person = strtolower(trim($birthday_person));
-        $id_city = filter_input(INPUT_POST,'ciudad',FILTER_SANITIZE_NUMBER_INT);        
-        return [$firstname_person,$lastname_person,$birthday_person,$id_city];        
+                   
     }
     protected function set_params():void{
-        list($firstname_person,
-        $lastname_person,
-        $birthday_person,
-        $id_city) = $this->validate();
-        $this->firstname_person = $firstname_person;
-        $this->lastname_person = $lastname_person;
-        $this->birthday_person = $birthday_person;
-        $this->id_city = $id_city;        
+        if(isset($_POST['documento'])){            
+            $id = $_POST['documento'];
+            $this->set_id($id);
+        }
+        $this->firstname_person = $_POST['nombre'];
+        $this->lastname_person = $_POST['apellido'];
+        $this->birthday_person = $_POST['fecha_nacimiento'];
+        $this->id_city =  filter_input(INPUT_POST,'ciudad',FILTER_SANITIZE_NUMBER_INT);
     }
     public function get_params():array{
         $datos = [];
