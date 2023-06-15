@@ -22,10 +22,5 @@ abstract class ORM{
         throw new \Exception('ERROR: NOT FOUND');        
         if($method=='POST' || ($method=='PUT' && !empty($_POST)) )$this->set_params();
     }
-    public function __set(string $name, string $value):void{
-        if($name=='get_params')throw new \Exception('ERROR:ACCESS DENIED');
-        $value = filter_var($value,FILTER_SANITIZE_SPECIAL_CHARS);
-        $this->{$name} = strtolower(trim($value));
-    }
 }
 

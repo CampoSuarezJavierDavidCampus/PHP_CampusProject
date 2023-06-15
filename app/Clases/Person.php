@@ -34,9 +34,9 @@ class Person extends ORM{
             $id = $_POST['documento'];
             $this->set_id($id);
         }
-        $this->firstname_person = $_POST['nombre'];
-        $this->lastname_person = $_POST['apellido'];
-        $this->birthday_person = $_POST['fecha_nacimiento'];
+        $this->firstname_person =filter_input(INPUT_POST,'nombre',FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->lastname_person = filter_input(INPUT_POST,'apellido',FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->birthday_person = filter_input(INPUT_POST,'fecha_nacimiento',FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $this->id_city =  filter_input(INPUT_POST,'ciudad',FILTER_SANITIZE_NUMBER_INT);
     }
     public function get_params():array{
