@@ -10,7 +10,7 @@ abstract class Controller{
     abstract protected function view(array $res):string;
     public function render($conn){             
         $res = (new Models($conn,$this->obj))->get_model($this->_name);
-        if($_SERVER['REQUEST_METHOD']!='GET')$this->redirect_to_start($res);
+        if($_SERVER['REQUEST_METHOD']!='GET')$this->redirect_to_start($res,true);
         return $this->view($res);        
     }
     public function get_name(){
@@ -25,12 +25,13 @@ abstract class Controller{
         if(isset($res['Error']))$this->redirect('ERROR:NO SE REGISTRARON CAMBIOS');
         if($method !== 'PUT'||($method === 'PUT' && !empty($_POST)))$this->redirect('SE ALTERO UN ELEMENTO');
     }
-    private function redirect(string $message):void{
+    private function redirect(string $message, bool $status = false):void{
         $path = strtolower($this->_name);        
+        $message = ($status)?'alert("$message")':'';
         echo <<<HTML
             <script>
                 let host = location.origin;
-                alert("$message");
+                $message
                 location.replace(host + '/$path');                                
             </script>
         HTML;
