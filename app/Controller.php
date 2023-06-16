@@ -10,9 +10,9 @@ abstract class Controller{
     abstract protected function view(array $res):string;
     public function render($conn){             
         $res = (new Models($conn,$this->obj))->get_model($this->_name);        
-        if($_SERVER['REQUEST_METHOD']!='GET'){
+        if($_SERVER['REQUEST_METHOD']!='GET'){            
             $message =  $this->redirect_to_start($res,true);
-            if(!empty($message))return $message;
+            if(!empty($message))return $message;                        
         }
         
         return $this->view($res);

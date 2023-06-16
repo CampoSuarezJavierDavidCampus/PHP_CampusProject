@@ -54,13 +54,11 @@ class Template{
         string $folder,
         array $datos        
     ){                        
-        if(!isset($datos['contents']) || !isset($datos['form']))
-                throw new \Exception('ERROR: UNDEFINED VIEW');
-
+        if(!isset($datos['contents']))throw new \Exception('ERROR: UNDEFINED VIEW');        
         $is_method_put = $_SERVER['REQUEST_METHOD']=='PUT';
         $file = $is_method_put?'UpdateForm.php':'Table.php';
         $contents =$is_method_put?$datos:$datos['contents'];        
-        $this->content = $this->get_php_template("components/$folder/$file", $contents);
-        $this->form = $this->get_php_template("components/$folder/Form.php",$datos['form']);
+        $this->content = $this->get_php_template("modules/$folder/$file", $contents);
+        $this->form = $this->get_php_template("modules/$folder/Form.php",isset($datos['form'])?$datos['form']:null);
     }
 }

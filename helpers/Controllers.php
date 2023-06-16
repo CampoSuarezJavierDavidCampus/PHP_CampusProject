@@ -3,7 +3,9 @@ namespace Helpers;
 use App\Controller;
 /* MY CONTROLLERS */
 use Controllers\PersonController;
-
+use Controllers\CountryController;
+use Controllers\RegionController;
+use Controllers\CityController;
 class Controllers{    
     private array $controllers = [];
     private int $id;
@@ -74,6 +76,9 @@ class Controllers{
     private function init(){
         /* INSERT CONTROLLERS (los nombres van en singular.)=>*/
         $this->set_controller('person',PersonController::class);
+        $this->set_controller('country',CountryController::class);
+        $this->set_controller('region',RegionController::class);
+        $this->set_controller('city',CityController::class);
     }
 
 }

@@ -4,6 +4,9 @@ use App\ORM;
 use App\Model;
 /* MY MODELS */
 use Models\PersonModel;
+use Models\CountryModel;
+use Models\RegionModel;
+use Models\CityModel;
 
 class Models{        
     private array $models = [];    
@@ -33,5 +36,8 @@ class Models{
     private function init():void{
         /* INSERT MODELS (los nombres van en singular.) => */
         $this->set_model('Person',PersonModel::class);
+        $this->set_model('Country',CountryModel::class);
+        $this->set_model('Region',RegionModel::class);
+        $this->set_model('City',CityModel::class);
     }
 }

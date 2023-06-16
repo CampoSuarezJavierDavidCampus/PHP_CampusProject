@@ -40,6 +40,7 @@ class Person extends ORM{
         $this->id_city =  filter_input(INPUT_POST,'ciudad',FILTER_SANITIZE_NUMBER_INT);
     }
     public function get_params():array{
+        $this->validate();
         $datos = [];
         if(!empty($this->id))$datos['id']=$this->id;
         if(!empty($this->firstname_person))$datos['firstname_person']=$this->firstname_person;
